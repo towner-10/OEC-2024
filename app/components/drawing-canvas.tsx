@@ -29,6 +29,9 @@ export default function DrawingCanvas() {
 			<Button size="icon" className="absolute top-0 left-0 m-2" onClick={() => clearCanvas()}>
 				<LucideTrash />
 			</Button>
+			<span className="font-hand not-italic pointer-events-none cursor-none absolute top-1/2 left-1/2 right-1/2 bottom-1/2 text-[128px] dark:text-primary-foreground">
+				a
+			</span>
 			<ReactSketchCanvas ref={ref} onStroke={onStroke} strokeWidth={4} strokeColor="black" />
 		</div>
 	);

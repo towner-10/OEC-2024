@@ -18,6 +18,7 @@ module.exports = {
     },
     fontFamily: {
       sans: ["Inter", "sans-serif"],
+      hand: ["Patrick Hand", "cursive"],
     },
     extend: {
       colors: {
