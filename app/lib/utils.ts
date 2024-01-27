@@ -40,23 +40,23 @@ export function limitPathSize(path: Point[]) : Point[] { // todo: remove export 
  * finds the average least euclidean distance points on the first path to the second 
  * comparedPointCount is the maximum number of points compared
  * 
- * @param path1 first path to compare
- * @param path2 second path to compare
+ * @param path1 first path (reference) to compare
+ * @param path2 second path (drawn) to compare
  */
 export function pathDist(refPath: Point[], path2: Point[], offset: Point) { 
   const fpath1 = limitPathSize(refPath);
   const fpath2 = limitPathSize(path2);
 
   let distSum = 0;
-  for(const point of fpath1 ) { // loop each point
+  for(const point of fpath2 ) { // loop each point
     let leastDist = euclidDist(point, fpath2[0], offset);
 
-    for(const refpoint of fpath2) {
+    for(const refpoint of fpath1) {
       const dist = euclidDist(point, refpoint, offset);
       if(dist < leastDist) leastDist = dist;
     }
     distSum += leastDist;
   }
-  return distSum;
+  return distSum / fpath2.length;
 }
 

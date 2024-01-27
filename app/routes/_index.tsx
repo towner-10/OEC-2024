@@ -23,7 +23,7 @@ export default function Index() {
 		console.log(path?.paths)
 		console.log(letterPaths.z)
 
-		if(path != null) console.log(pathDist(path.paths, letterPaths.z, offset))
+		if(path != null) console.log(pathDist(letterPaths.z, path.paths, offset))
 	});
 
 	const [score, setScore] = useState<number>(0);
