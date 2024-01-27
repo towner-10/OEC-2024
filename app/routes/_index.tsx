@@ -9,7 +9,7 @@ import { useStore } from '~/lib/game-state';
 import { useCallback, useEffect, useState } from 'react';
 import logo from '~/assets/ln_logo.svg';
 import { Letters, letterPaths, letterStrokes } from '~/lib/letter-paths';
-import { pathDist } from '~/lib/utils';
+import { pathDist, sigmoid } from '~/lib/utils';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'LetterNinja' }, { name: 'description', content: 'Placeholder' }];
@@ -38,6 +38,7 @@ export default function Index() {
 		accuracy,
 		currentTotalLetters,
 		addScore,
+		setAccuracy,
 		resetScore,
 		setLetter,
 		setOffset
@@ -65,6 +66,11 @@ export default function Index() {
 			y: generateRandomInRange(0, 400)
 		});
 	}, [setLetter, setOffset, acceptedLetters]);
+
+	useEffect(() => {
+		const average = Math.floor(currentScore / currentTotalLetters);
+		setAccuracy(sigmoid(average - 100, 20));
+	}, [currentScore, currentTotalLetters, setAccuracy]);
 
 	useEffect(() => {
 		if (!path || !letter || strokes < letterStrokes[letter] + 1) return;
