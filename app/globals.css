@@ -71,8 +71,21 @@
 
 @layer base {
 	* {
-		@apply border-border;
+		@apply italic;
 	}
+
+	h2 {
+		@apply text-4xl text-primary;
+	}
+
+	h3 {
+		@apply font-bold;
+	}
+
+	h4 {
+		@apply font-semibold;
+	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
