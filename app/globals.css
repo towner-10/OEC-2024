@@ -90,4 +90,8 @@
 	body {
 		@apply bg-background text-foreground;
 	}
+
+	p {
+		line-height: 100%;
+	}
 }
