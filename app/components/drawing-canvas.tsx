@@ -41,7 +41,7 @@ export default function DrawingCanvas() {
 
 	return (
 		<div className="w-full h-[600px] relative">
-			<canvas className='absolute w-full h-[600px]' ref={canvasRef} />
+			<canvas className='absolute w-full h-[600px] pointer-events-none' ref={canvasRef} />
 			<Button size="icon" className="absolute bottom-0 right-0 m-2" onClick={() => clearCanvas()}>
 				<LucideTrash />
 			</Button>
