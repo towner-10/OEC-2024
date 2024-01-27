@@ -1,12 +1,13 @@
 import { ReactSketchCanvas, ReactSketchCanvasRef, CanvasPath } from 'react-sketch-canvas';
 import { Button } from './ui/button';
 import { LucideTrash } from 'lucide-react';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useStore } from '~/lib/game-state';
+import { letterPaths } from '~/lib/letter-paths';
 
 export default function DrawingCanvas() {
 	const sketchRef = useRef<ReactSketchCanvasRef>(null);
-	const { addPath, setPath, offset} = useStore();
+	const { addPath, setPath, offset } = useStore();
 
 	const clearCanvas = useCallback(() => {
 		sketchRef.current?.clearCanvas();
@@ -24,6 +25,18 @@ export default function DrawingCanvas() {
 		},
 		[addPath]
 	);
+
+	/**
+	useEffect(() => {
+		const canvasPath: CanvasPath[] = [{
+			drawMode: true,
+			paths: letterPaths.k,
+			strokeColor: 'black',
+			strokeWidth: 4
+		}];
+		sketchRef.current?.loadPaths(canvasPath);
+	}, []);
+	*/
 
 	return (
 		<div className="w-full h-[600px] relative">

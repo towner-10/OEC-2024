@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
-const comparedPointMax = 1000;
+const comparedPointMax = 5000;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -43,20 +43,34 @@ export function limitPathSize(path: Point[]) : Point[] { // todo: remove export 
  * @param path1 first path (reference) to compare
  * @param path2 second path (drawn) to compare
  */
-export function pathDist(refPath: Point[], path2: Point[], offset: Point) { 
+export function pathDist(refPath: Point[], drawnpath: Point[], offset: Point) { 
   const fpath1 = limitPathSize(refPath);
-  const fpath2 = limitPathSize(path2);
+  const fpath2 = limitPathSize(drawnpath);
 
   let distSum = 0;
-  for(const point of fpath2 ) { // loop each point
+  for(const point of fpath1 ) { // loop each point
     let leastDist = euclidDist(point, fpath2[0], offset);
+
+    for(const refpoint of fpath2) {
+      const dist = euclidDist(point, refpoint, offset);
+      if(dist < leastDist) leastDist = dist;
+    }
+    distSum += Math.pow(leastDist,2);
+  }
+  distSum = Math.sqrt(distSum / fpath1.length)
+
+  let invSum = 0;
+  for(const point of fpath2 ) { // loop each point
+    let leastDist = euclidDist(point, fpath1[0], offset);
 
     for(const refpoint of fpath1) {
       const dist = euclidDist(point, refpoint, offset);
       if(dist < leastDist) leastDist = dist;
     }
-    distSum += leastDist;
+    invSum += Math.pow(leastDist,2);
   }
-  return distSum / fpath2.length;
+  invSum = Math.sqrt(invSum / fpath2.length)
+
+  return (invSum + distSum )/ 10;
 }
 
