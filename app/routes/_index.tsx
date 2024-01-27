@@ -67,7 +67,7 @@ export default function Index() {
 				</div>
 				<div className='col-span-3 ml-20'>
 					<DrawingCanvas />
-				</div>			
+				</div>
 			</main>
 		</>
 	);

@@ -1,15 +1,30 @@
 import { ReactSketchCanvas, ReactSketchCanvasRef, CanvasPath } from 'react-sketch-canvas';
 import { Button } from './ui/button';
 import { LucideTrash } from 'lucide-react';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useStore } from '~/lib/game-state';
 
 export default function DrawingCanvas() {
-	const ref = useRef<ReactSketchCanvasRef>(null);
+	const sketchRef = useRef<ReactSketchCanvasRef>(null);
+	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const { addPath, setPath } = useStore();
 
+	useEffect(() => {
+		const ctx = canvasRef.current?.getContext('2d');
+
+		if (!ctx) {
+			return;
+		}
+
+		ctx.font = '254px Patrick Hand';
+		ctx.textAlign = 'center';
+		ctx.fillStyle = 'black';
+		ctx.fillText('a', 5, 5);
+	}, [canvasRef]);
+
 	const clearCanvas = useCallback(() => {
-		ref.current?.clearCanvas();
+		sketchRef.current?.clearCanvas();
+		sketchRef.current?.loadPaths([]);
 		setPath(null);
 	}, [setPath]);
 
@@ -25,11 +40,12 @@ export default function DrawingCanvas() {
 	);
 
 	return (
-		<div className="w-full h-5/6 relative">
-			<Button size="icon" className="absolute top-0 left-0 m-2" onClick={() => clearCanvas()}>
+		<div className="w-full h-[600px] relative">
+			<canvas className='absolute w-full h-[600px] pointer-events-none' ref={canvasRef} />
+			<Button size="icon" className="absolute bottom-0 right-0 m-2" onClick={() => clearCanvas()}>
 				<LucideTrash />
 			</Button>
-			<ReactSketchCanvas ref={ref} onStroke={onStroke} strokeWidth={4} strokeColor="black" />
+			<ReactSketchCanvas ref={sketchRef} onStroke={onStroke} strokeWidth={4} strokeColor="black" />
 		</div>
 	);
 }
