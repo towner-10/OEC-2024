@@ -40,6 +40,18 @@ export default function DrawingCanvas() {
 		[addPath, setStrokes, strokes]
 	);
 
+	/**
+	useEffect(() => {
+		const canvasPath: CanvasPath[] = [{
+			drawMode: true,
+			paths: letterPaths.k,
+			strokeColor: 'black',
+			strokeWidth: 4
+		}];
+		sketchRef.current?.loadPaths(canvasPath);
+	}, []);
+	*/
+
 	return (
 		<div className="w-full h-[600px] relative">
 			{letter && <LetterOutline letter={letter} offset={offset} />}
