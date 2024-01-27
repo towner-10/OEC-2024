@@ -36,13 +36,10 @@ export default function Index() {
 		letter,
 		strokes,
 		currentTotalLetters,
-		// totalTime,
 		addScore,
 		resetScore,
 		setLetter,
-		setOffset,
-		// setTotalTime,
-		setLetterTimer
+		setOffset
 	} = useStore();
 
 	// const [spd, setSpeed] = useState<number>(10);
@@ -67,10 +64,7 @@ export default function Index() {
 			x: generateRandomInRange(0, 300),
 			y: generateRandomInRange(0, 400)
 		});
-
-		// setTotalTime();
-		setLetterTimer(Date.now());
-	}, [setLetter, setOffset, setLetterTimer, acceptedLetters]);
+	}, [setLetter, setOffset, acceptedLetters]);
 
 	useEffect(() => {
 		if (!path || !letter || strokes < letterStrokes[letter] + 1) return;
@@ -133,7 +127,7 @@ export default function Index() {
 
 							setTimeout(() => {
 								!gameOver && setGameOver(true);
-							}, 10000);
+							}, 60000);
 						}}
 					>
 						START MATCH

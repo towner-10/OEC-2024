@@ -17,10 +17,6 @@ export const useStore = create<{
 	setOffset: (point: Point) => void;
 	strokes: number;
 	setStrokes: (strokes: number) => void;
-	totalTime: number;
-	setTotalTime: (time: number) => void;
-	letterTimer: number | null;
-	setLetterTimer: (time: number | null) => void;
 }>((set) => ({
 	currentScore: 0,
 	resetScore: () => set({ currentScore: 0, currentTotalLetters: 0 }),
@@ -54,9 +50,5 @@ export const useStore = create<{
 	offset: { x: 0, y: 0 },
 	setOffset: (point: Point) => set({ offset: point }),
 	strokes: 0,
-	setStrokes: (strokes: number) => set({ strokes }),
-	totalTime: 0,
-	setTotalTime: (time: number) => set({ totalTime: time }),
-	letterTimer: null,
-	setLetterTimer: (time: number | null) => set({ letterTimer: time })
+	setStrokes: (strokes: number) => set({ strokes })
 }));
