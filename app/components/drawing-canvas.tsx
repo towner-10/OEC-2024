@@ -1,7 +1,7 @@
 import { ReactSketchCanvas, ReactSketchCanvasRef, CanvasPath } from 'react-sketch-canvas';
 import { Button } from './ui/button';
 import { LucideTrash } from 'lucide-react';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useStore } from '~/lib/game-state';
 
 function LetterOutline({ letter, offset }: { letter: string; offset: { x: number; y: number } }) {
@@ -40,17 +40,9 @@ export default function DrawingCanvas() {
 		[addPath, setStrokes, strokes]
 	);
 
-	/**
 	useEffect(() => {
-		const canvasPath: CanvasPath[] = [{
-			drawMode: true,
-			paths: letterPaths.k,
-			strokeColor: 'black',
-			strokeWidth: 4
-		}];
-		sketchRef.current?.loadPaths(canvasPath);
-	}, []);
-	*/
+		clearCanvas();
+	}, [letter, clearCanvas]);
 
 	return (
 		<div className="w-full h-[600px] relative">
