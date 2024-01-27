@@ -21,6 +21,7 @@ export default function DrawingCanvas() {
 					border: '0.0625rem solid #9c9c9c',
 					borderRadius: '0.25rem'
 				}}
+				onStroke={(e) => console.log(e)}
 				strokeWidth={4}
 				strokeColor="black"
 			/>
