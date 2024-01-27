@@ -69,7 +69,15 @@ export default function Index() {
 
 	useEffect(() => {
 		const average = Math.floor(currentScore / currentTotalLetters);
-		setAccuracy(sigmoid(average - 100, 20));
+		const accuracy = sigmoid(average - 100, 20);
+
+		// Check if NaN
+		if (accuracy !== accuracy) {
+			setAccuracy(0);
+			return;
+		}
+
+		setAccuracy(accuracy);
 	}, [currentScore, currentTotalLetters, setAccuracy]);
 
 	useEffect(() => {
@@ -109,7 +117,7 @@ export default function Index() {
 					<div className="mt-2">
 						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
 							<h4>ACCURACY</h4>
-							<h5>{accuracy}</h5>
+							<h5>{accuracy ? `${(accuracy * 100).toFixed(2)}%` : 'N/A'}</h5>
 						</div>
 						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
 							<h4>AVERAGE</h4>
