@@ -8,25 +8,30 @@ import { ModeToggle } from '~/components/mode-toggle';
 import { useStore } from '~/lib/game-state';
 import { useEffect, useState } from 'react';
 import logo from '../assets/ln_logo.svg';
+import { letterPaths } from '~/lib/letter-paths';
+import { pathDist } from '~/lib/utils';
 
 export const meta: MetaFunction = () => {
 	return [{ title: 'PictureThis' }, { name: 'description', content: 'Placeholder' }];
 };
 
 export default function Index() {
-	const { path } = useStore();
-	
+
+	const { path, offset, setOffset} = useStore();
 
 	useEffect(() => {
-		console.log(path);
-	}, [path]);
+		console.log(path?.paths)
+		console.log(letterPaths.z)
 
+		if(path != null) console.log(pathDist(path.paths, letterPaths.z, offset))
+	});
 
 	const [score, setScore] = useState<number>(0);
 	const [spd, setSpeed] = useState<number>(10);
 	const [acc, setAccuracy] = useState<number>(50);
 	const [hScore, setHighScore] = useState<number>(20000);
 	const [acceptedLetters, setAcceptedLetters] = useState<string>('');
+
 
 	return (
 		<main>
