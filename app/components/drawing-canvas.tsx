@@ -25,7 +25,7 @@ export default function DrawingCanvas() {
 	);
 
 	return (
-		<div className="w-full h-[600px] relative">
+		<div className="w-full h-5/6 relative">
 			<Button size="icon" className="absolute top-0 left-0 m-2" onClick={() => clearCanvas()}>
 				<LucideTrash />
 			</Button>
