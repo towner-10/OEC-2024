@@ -5,8 +5,9 @@ import { Letters } from './letter-paths';
 
 export const useStore = create<{
 	currentScore: number;
-	setScore: (score: number) => void;
+	resetScore: () => void;
 	addScore: (score: number) => void;
+	currentTotalLetters: number;
 	path: CanvasPath | null;
 	setPath: (path: CanvasPath | null) => void;
 	addPath: (path: CanvasPath) => void;
@@ -18,8 +19,13 @@ export const useStore = create<{
 	setStrokes: (strokes: number) => void;
 }>((set) => ({
 	currentScore: 0,
-	setScore: (score: number) => set({ currentScore: score }),
-	addScore: (score: number) => set((state) => ({ currentScore: state.currentScore + score })),
+	resetScore: () => set({ currentScore: 0, currentTotalLetters: 0 }),
+	addScore: (score: number) =>
+		set((state) => ({
+			currentScore: state.currentScore + score,
+			currentTotalLetters: state.currentTotalLetters + 1
+		})),
+	currentTotalLetters: 0,
 	path: null,
 	setPath: (path: CanvasPath | null) => set({ path }),
 	addPath: (path: CanvasPath) =>

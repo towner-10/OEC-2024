@@ -6,7 +6,7 @@ import DrawingCanvas from '~/components/drawing-canvas';
 
 import { ModeToggle } from '~/components/mode-toggle';
 import { useStore } from '~/lib/game-state';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import logo from '~/assets/ln_logo.svg';
 import { Letters, letterPaths, letterStrokes } from '~/lib/letter-paths';
 import { pathDist } from '~/lib/utils';
@@ -29,19 +29,39 @@ const generateRandomInRange = (min: number, max: number) => {
 };
 
 export default function Index() {
-	const { currentScore, path, offset, letter, strokes, addScore, setScore, setLetter, setOffset } =
-		useStore();
-
-	useEffect(() => {
-		if (!path || !letter || strokes < letterStrokes[letter] + 1) return;
-		const letterScore = pathDist(letterPaths[letter], path.paths, offset);
-		addScore(letterScore);
-	}, [letter, offset, path, strokes, addScore]);
+	const {
+		currentScore,
+		path,
+		offset,
+		letter,
+		strokes,
+		addScore,
+		resetScore,
+		setLetter,
+		setOffset
+	} = useStore();
 
 	const [spd, setSpeed] = useState<number>(10);
 	const [acc, setAccuracy] = useState<number>(50);
 	const [hScore] = useState<number>(20000);
 	const [acceptedLetters, setAcceptedLetters] = useState<string>('');
+
+	const newLetter = useCallback(() => {
+		setLetter(
+			generateRandomLetter(acceptedLetters !== '' ? acceptedLetters.split(',') : undefined)
+		);
+		setOffset({
+			x: generateRandomInRange(0, 300),
+			y: generateRandomInRange(0, 400)
+		});
+	}, [setLetter, setOffset, acceptedLetters]);
+
+	useEffect(() => {
+		if (!path || !letter || strokes < letterStrokes[letter] + 1) return;
+		const letterScore = pathDist(letterPaths[letter], path.paths, offset);
+		addScore(letterScore);
+		newLetter();
+	}, [letter, offset, path, strokes, addScore, newLetter]);
 
 	return (
 		<main>
@@ -76,19 +96,11 @@ export default function Index() {
 					<Button
 						className="text-white font-bold mt-12"
 						onClick={() => {
-							setScore(0);
+							resetScore();
 							setSpeed(10);
 							setAccuracy(50);
 
-							setLetter(
-								generateRandomLetter(
-									acceptedLetters !== '' ? acceptedLetters.split(',') : undefined
-								)
-							);
-							setOffset({
-								x: generateRandomInRange(0, 100),
-								y: generateRandomInRange(0, 100)
-							});
+							newLetter();
 						}}
 					>
 						START MATCH
