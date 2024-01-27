@@ -35,16 +35,28 @@ export default function Index() {
 		offset,
 		letter,
 		strokes,
+		currentTotalLetters,
+		// totalTime,
 		addScore,
 		resetScore,
 		setLetter,
-		setOffset
+		setOffset,
+		// setTotalTime,
+		setLetterTimer
 	} = useStore();
 
 	const [spd, setSpeed] = useState<number>(10);
-	const [acc, setAccuracy] = useState<number>(50);
-	const [hScore] = useState<number>(20000);
+	const [hScore, setHighScore] = useState<number>(0);
 	const [acceptedLetters, setAcceptedLetters] = useState<string>('');
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			const highScore = localStorage.getItem('highScore');
+			if (highScore) {
+				setHighScore(parseFloat(highScore));
+			}
+		}
+	}, []);
 
 	const newLetter = useCallback(() => {
 		setLetter(
@@ -54,14 +66,33 @@ export default function Index() {
 			x: generateRandomInRange(0, 300),
 			y: generateRandomInRange(0, 400)
 		});
-	}, [setLetter, setOffset, acceptedLetters]);
+
+		// setTotalTime();
+		setLetterTimer(Date.now());
+	}, [setLetter, setOffset, setLetterTimer, acceptedLetters]);
 
 	useEffect(() => {
 		if (!path || !letter || strokes < letterStrokes[letter] + 1) return;
 		const letterScore = pathDist(letterPaths[letter], path.paths, offset);
 		addScore(letterScore);
 		newLetter();
-	}, [letter, offset, path, strokes, addScore, newLetter]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [strokes, addScore, newLetter]);
+
+	const onFinish = useCallback(() => {
+		alert(`Game over! ${currentScore}`);
+		if (currentScore > hScore) {
+			console.log('New high score!');
+			setHighScore(currentScore);
+			localStorage.setItem('highScore', currentScore.toString());
+		}
+
+		console.log(currentScore);
+
+		resetScore();
+		setLetter(null);
+		setOffset({ x: 0, y: 0 });
+	}, [currentScore, hScore, resetScore, setLetter, setOffset]);
 
 	return (
 		<main>
@@ -72,22 +103,22 @@ export default function Index() {
 				<div className="col-span-1 flex flex-col ml-20">
 					<img src={logo} alt="Logo" className="w-48 h-22"></img>
 					<div className="flex flex-col pt-12 gap-0">
-						<h2> {Math.floor(currentScore)} </h2>
-						<h3> MATCH SCORE </h3>
+						<h2>{Math.floor(currentScore)}</h2>
+						<h3>MATCH SCORE</h3>
 					</div>
 					<div className="mt-2">
 						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
-							<h4> SPEED </h4>
-							<h5> {spd} letters/min</h5>
+							<h4>SPEED</h4>
+							<h5>{spd} letters/min</h5>
 						</div>
 						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
-							<h4> ACCURACY </h4>
-							<h5> {acc}% </h5>
+							<h4>AVERAGE</h4>
+							<h5>{Math.floor(currentScore / currentTotalLetters) || 'N/A'}</h5>
 						</div>
 					</div>
 					<div className="flex flex-col pt-12 gap-0">
-						<h2> {hScore} </h2>
-						<h3> HIGH SCORE </h3>
+						<h2>{Math.floor(hScore)}</h2>
+						<h3>HIGH SCORE</h3>
 					</div>
 					<div className="flex flex-col pt-10 gap-2">
 						<Input onChange={(e) => setAcceptedLetters(e.target.value)}></Input>
@@ -98,9 +129,11 @@ export default function Index() {
 						onClick={() => {
 							resetScore();
 							setSpeed(10);
-							setAccuracy(50);
 
 							newLetter();
+
+							// Create a timer for 60s to end the game
+							setTimeout(onFinish, 10000);
 						}}
 					>
 						START MATCH

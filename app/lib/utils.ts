@@ -50,7 +50,7 @@ export function pathDist(refPath: Point[], drawnpath: Point[], offset: Point) {
 	let distSum = 0;
 	for (const point of fpath1) {
 		// loop each point
-		let leastDist = euclidDist(fpath2[0], point , offset);
+		let leastDist = euclidDist(fpath2[0], point, offset);
 
 		for (const dpoint of fpath2) {
 			const dist = euclidDist(dpoint, point, offset);
@@ -66,13 +66,13 @@ export function pathDist(refPath: Point[], drawnpath: Point[], offset: Point) {
 		let leastDist = euclidDist(point, fpath1[0], offset);
 
 		for (const refpoint of fpath1) {
-			const dist = euclidDist( point, refpoint, offset);
+			const dist = euclidDist(point, refpoint, offset);
 			if (dist < leastDist) leastDist = dist;
 		}
 		invSum += Math.pow(leastDist, 2);
 	}
 	invSum = Math.sqrt(invSum / fpath2.length);
 
-  console.log(distSum, invSum, offset);
-	return distSum + invSum / 10;
+	console.log(distSum, invSum, offset);
+	return 1000 / (distSum + invSum);
 }

@@ -42,7 +42,7 @@ export default function DrawingCanvas() {
 
 	useEffect(() => {
 		clearCanvas();
-	}, [letter, clearCanvas]);
+	}, [offset, clearCanvas]);
 
 	return (
 		<div className="w-full h-[600px] relative">
