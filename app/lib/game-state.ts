@@ -9,6 +9,7 @@ export const useStore = create<{
 	addScore: (score: number) => void;
 	currentTotalLetters: number;
 	accuracy: number;
+	setAccuracy: (accuracy: number) => void;
 	path: CanvasPath | null;
 	setPath: (path: CanvasPath | null) => void;
 	addPath: (path: CanvasPath) => void;
@@ -28,6 +29,7 @@ export const useStore = create<{
 		})),
 	currentTotalLetters: 0,
 	accuracy: 0,
+	setAccuracy: (accuracy: number) => set({ accuracy }),
 	path: null,
 	setPath: (path: CanvasPath | null) => set({ path }),
 	addPath: (path: CanvasPath) =>
