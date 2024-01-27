@@ -76,3 +76,7 @@ export function pathDist(refPath: Point[], drawnpath: Point[], offset: Point) {
 	console.log(distSum, invSum, offset);
 	return 1000 / (distSum + invSum);
 }
+
+export function sigmoid(x: number, k: number): number {
+	return 1 / (1+ Math.exp(-x/k));
+}
