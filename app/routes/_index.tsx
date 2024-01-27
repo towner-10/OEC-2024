@@ -1,9 +1,20 @@
 import type { MetaFunction } from '@remix-run/node';
 
+import { ModeToggle } from "~/components/mode-toggle";
+
 export const meta: MetaFunction = () => {
-	return [{ title: 'New Remix App' }, { name: 'description', content: 'Welcome to Remix!' }];
+	return [{ title: 'PictureThis' }, { name: 'description', content: 'Placeholder' }];
 };
 
 export default function Index() {
-	return <h1 className="text-2xl">Testing</h1>;
+	return (
+		<>
+			<header className="flex flex-row justify-between items-center">
+				<h1>
+				Picture <span className="font-light">This</span>
+				</h1>
+				<ModeToggle />
+			</header>
+		</>
+	);
 }
