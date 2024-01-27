@@ -35,6 +35,7 @@ export default function Index() {
 		offset,
 		letter,
 		strokes,
+		accuracy,
 		currentTotalLetters,
 		addScore,
 		resetScore,
@@ -42,7 +43,6 @@ export default function Index() {
 		setOffset
 	} = useStore();
 
-	// const [spd, setSpeed] = useState<number>(10);
 	const [hScore, setHighScore] = useState<number>(0);
 	const [gameOver, setGameOver] = useState<boolean>(false);
 	const [acceptedLetters, setAcceptedLetters] = useState<string>('');
@@ -84,7 +84,6 @@ export default function Index() {
 
 			setLetter(null);
 			setOffset({ x: 0, y: 0 });
-			resetScore();
 		}
 		return () => setGameOver(false);
 	}, [currentScore, gameOver, hScore, resetScore, setLetter, setOffset]);
@@ -102,10 +101,10 @@ export default function Index() {
 						<h3>MATCH SCORE</h3>
 					</div>
 					<div className="mt-2">
-						{/* <div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
-							<h4>SPEED</h4>
-							<h5>{spd} letters/min</h5>
-						</div> */}
+						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
+							<h4>ACCURACY</h4>
+							<h5>{accuracy}</h5>
+						</div>
 						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
 							<h4>AVERAGE</h4>
 							<h5>{Math.floor(currentScore / currentTotalLetters) || 'N/A'}</h5>
