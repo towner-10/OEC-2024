@@ -12,7 +12,7 @@ import { letterPaths } from '~/lib/letter-paths';
 import { pathDist } from '~/lib/utils';
 
 export const meta: MetaFunction = () => {
-	return [{ title: 'PictureThis' }, { name: 'description', content: 'Placeholder' }];
+	return [{ title: 'LetterNinja' }, { name: 'description', content: 'Placeholder' }];
 };
 
 export default function Index() {
