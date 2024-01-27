@@ -12,12 +12,28 @@ export type Point = {
 	y: number;
 };
 
+/**
+ * 
+ * euclidian distance = sqrt(dx^2 + dy^2)
+ * 
+ * @param point1 
+ * @param point2 
+ * @param offset 
+ * @returns 
+ */
 function euclidDist(point1: Point, point2: Point, offset: Point): number {
 	return Math.sqrt(
 		Math.pow(point1.x - point2.x - offset.x, 2) + Math.pow(point1.y - point2.y - offset.y, 2)
 	);
 }
 
+/**
+ * 
+ * limit a path to comparedPointMax # of points or less
+ * 
+ * @param path input path
+ * @returns 
+ */
 export function limitPathSize(path: Point[]): Point[] {
 	// todo: remove export (test only)
 	if (path.length < comparedPointMax) {
@@ -77,6 +93,14 @@ export function pathDist(refPath: Point[], drawnpath: Point[], offset: Point) {
 	return 1000 / (distSum + invSum);
 }
 
+/**
+ * 
+ * sigmoid scaling (you know, for like scoring and stuff)
+ * 
+ * @param x input 
+ * @param k constant
+ * @returns 
+ */
 export function sigmoid(x: number, k: number): number {
 	return 1 / (1+ Math.exp(-x/k));
 }
