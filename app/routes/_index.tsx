@@ -29,21 +29,18 @@ const generateRandomInRange = (min: number, max: number) => {
 };
 
 export default function Index() {
-	const { path, offset, letter, strokes, setLetter, setOffset } = useStore();
+	const { currentScore, path, offset, letter, strokes, addScore, setScore, setLetter, setOffset } =
+		useStore();
 
 	useEffect(() => {
-		if (!path || !letter || strokes < letterStrokes[letter]) return;
-		const score = 1 / pathDist(letterPaths[letter], path.paths, offset);
-		console.log(score);
+		if (!path || !letter || strokes < letterStrokes[letter] + 1) return;
+		const letterScore = pathDist(letterPaths[letter], path.paths, offset);
+		addScore(letterScore);
+	}, [letter, offset, path, strokes, addScore]);
 
-	}, [letter, offset, path, strokes]);
-
-	useEffect(() => {}, []);
-
-	const [score, setScore] = useState<number>(0);
 	const [spd, setSpeed] = useState<number>(10);
 	const [acc, setAccuracy] = useState<number>(50);
-	const [hScore, setHighScore] = useState<number>(20000);
+	const [hScore] = useState<number>(20000);
 	const [acceptedLetters, setAcceptedLetters] = useState<string>('');
 
 	return (
@@ -55,7 +52,7 @@ export default function Index() {
 				<div className="col-span-1 flex flex-col ml-20">
 					<img src={logo} alt="Logo" className="w-48 h-22"></img>
 					<div className="flex flex-col pt-12 gap-0">
-						<h2> {score} </h2>
+						<h2> {Math.floor(currentScore)} </h2>
 						<h3> MATCH SCORE </h3>
 					</div>
 					<div className="mt-2">
@@ -82,8 +79,6 @@ export default function Index() {
 							setScore(0);
 							setSpeed(10);
 							setAccuracy(50);
-							setHighScore(20000);
-							setAcceptedLetters('');
 
 							setLetter(
 								generateRandomLetter(
