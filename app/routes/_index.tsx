@@ -45,8 +45,9 @@ export default function Index() {
 		setLetterTimer
 	} = useStore();
 
-	const [spd, setSpeed] = useState<number>(10);
+	// const [spd, setSpeed] = useState<number>(10);
 	const [hScore, setHighScore] = useState<number>(0);
+	const [gameOver, setGameOver] = useState<boolean>(false);
 	const [acceptedLetters, setAcceptedLetters] = useState<string>('');
 
 	useEffect(() => {
@@ -79,20 +80,20 @@ export default function Index() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [strokes, addScore, newLetter]);
 
-	const onFinish = useCallback(() => {
-		alert(`Game over! ${currentScore}`);
-		if (currentScore > hScore) {
-			console.log('New high score!');
-			setHighScore(currentScore);
-			localStorage.setItem('highScore', currentScore.toString());
+	useEffect(() => {
+		if (gameOver) {
+			if (currentScore > hScore) {
+				console.log('New high score!');
+				setHighScore(currentScore);
+				localStorage.setItem('highScore', currentScore.toString());
+			}
+
+			setLetter(null);
+			setOffset({ x: 0, y: 0 });
+			resetScore();
 		}
-
-		console.log(currentScore);
-
-		resetScore();
-		setLetter(null);
-		setOffset({ x: 0, y: 0 });
-	}, [currentScore, hScore, resetScore, setLetter, setOffset]);
+		return () => setGameOver(false);
+	}, [currentScore, gameOver, hScore, resetScore, setLetter, setOffset]);
 
 	return (
 		<main>
@@ -107,10 +108,10 @@ export default function Index() {
 						<h3>MATCH SCORE</h3>
 					</div>
 					<div className="mt-2">
-						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
+						{/* <div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
 							<h4>SPEED</h4>
 							<h5>{spd} letters/min</h5>
-						</div>
+						</div> */}
 						<div className="grid grid-cols-2 px-0 py-0 gapx-5 gapy-0">
 							<h4>AVERAGE</h4>
 							<h5>{Math.floor(currentScore / currentTotalLetters) || 'N/A'}</h5>
@@ -128,12 +129,11 @@ export default function Index() {
 						className="text-white font-bold mt-12"
 						onClick={() => {
 							resetScore();
-							setSpeed(10);
-
 							newLetter();
 
-							// Create a timer for 60s to end the game
-							setTimeout(onFinish, 10000);
+							setTimeout(() => {
+								!gameOver && setGameOver(true);
+							}, 10000);
 						}}
 					>
 						START MATCH
