@@ -6,7 +6,7 @@ import { useStore } from '~/lib/game-state';
 
 export default function DrawingCanvas() {
 	const sketchRef = useRef<ReactSketchCanvasRef>(null);
-	const { addPath, setPath } = useStore();
+	const { addPath, setPath, offset} = useStore();
 
 	const clearCanvas = useCallback(() => {
 		sketchRef.current?.clearCanvas();
@@ -27,7 +27,7 @@ export default function DrawingCanvas() {
 
 	return (
 		<div className="w-full h-[600px] relative">
-			<div className="opacity-25 font-hand not-italic pointer-events-none cursor-none absolute text-[128px] dark:text-primary-foreground">
+			<div className={`opacity-25 font-hand not-italic pointer-events-none cursor-none absolute text-[128px] top-[${offset.y}px] left-[${offset.x}] dark:text-primary-foreground`}>
 				z
 			</div>
 			<Button size="icon" className="absolute bottom-0 right-0 m-2" onClick={() => clearCanvas()}>
