@@ -1,3 +1,5 @@
+export type Letters = keyof typeof letterPaths;
+
 export const letterStrokes = {
 	a: 1,
 	b: 1,

@@ -4,15 +4,29 @@ import { LucideTrash } from 'lucide-react';
 import { useCallback, useRef } from 'react';
 import { useStore } from '~/lib/game-state';
 
+function LetterOutline({ letter, offset }: { letter: string; offset: { x: number; y: number } }) {
+	return (
+		<div
+			style={{
+				transform: `translate(${offset.x}px, ${offset.y}px)`
+			}}
+			className={`opacity-25 font-hand not-italic pointer-events-none cursor-none absolute text-[128px] dark:text-primary-foreground`}
+		>
+			{letter}
+		</div>
+	);
+}
+
 export default function DrawingCanvas() {
 	const sketchRef = useRef<ReactSketchCanvasRef>(null);
-	const { addPath, setPath, offset} = useStore();
+	const { addPath, setPath, setStrokes, offset, letter, strokes } = useStore();
 
 	const clearCanvas = useCallback(() => {
 		sketchRef.current?.clearCanvas();
 		sketchRef.current?.loadPaths([]);
 		setPath(null);
-	}, [setPath]);
+		setStrokes(0);
+	}, [setPath, setStrokes]);
 
 	const onStroke = useCallback(
 		(path: CanvasPath, isEraser: boolean) => {
@@ -20,16 +34,15 @@ export default function DrawingCanvas() {
 				return;
 			}
 
+			setStrokes(strokes + 1);
 			addPath(path);
 		},
-		[addPath]
+		[addPath, setStrokes, strokes]
 	);
 
 	return (
 		<div className="w-full h-[600px] relative">
-			<div className={`opacity-25 font-hand not-italic pointer-events-none cursor-none absolute text-[128px] top-[${offset.y}px] left-[${offset.x}] dark:text-primary-foreground`}>
-				k
-			</div>
+			{letter && <LetterOutline letter={letter} offset={offset} />}
 			<Button size="icon" className="absolute bottom-0 right-0 m-2" onClick={() => clearCanvas()}>
 				<LucideTrash />
 			</Button>
